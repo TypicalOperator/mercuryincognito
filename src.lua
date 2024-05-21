@@ -1664,7 +1664,7 @@ function Library:dropdown(options)
 			local label = item[1]
 			local value = item[2]
 
-			if type(label) == "table" then continue end
+			if type(label) == "table" then continue = true end
 
 			local newItem = itemContainer:object("TextButton", {
 				Theme = {

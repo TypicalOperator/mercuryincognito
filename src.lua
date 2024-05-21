@@ -1648,34 +1648,29 @@ function Library:dropdown(options)
 	end
 
 	function methods:AddItems(fitems)
-		for i, v in next, fitems do
-			if typeof(v) == "table" then
-				items[#items+1] = v
-			else
-				items[#items+1] = {tostring(v), v}
-			end
-		end
+		function methods:AddItems(fitems)
+    for i, v in next, fitems do
+        if typeof(v) == "table" then
+            items[#items+1] = v
+            goto continue -- Skip the rest of the loop code
+        else
+            items[#items+1] = {tostring(v), v}
+        end
 
-		newSize = (25 * #items) + 5
-		itemContainer:tween{Size = (not open and UDim2.new(1, -10, 0, 0)) or UDim2.new(1, -10, 0, newSize)}
-		dropdownContainer:tween({Size = (not open and UDim2.new(1, -20, 0, 52)) or UDim2.new(1, -20, 0, 52 + newSize)})
+        -- Rest of the loop code here
+        local label = item[1]
+        local value = item[2]
 
-		for i, item in next, items do
-			local label = item[1]
-			local value = item[2]
+        local newItem = itemContainer:object("TextButton", {
+            Theme = {
+                BackgroundColor3 = {"Secondary", 25},
+                TextColor3 = {"StrongText", 25}
+            },
+            Text = label,
+            TextSize = 14
+        }):round(5)
 
-			if type(label) == "table" then continue = true end
-
-			local newItem = itemContainer:object("TextButton", {
-				Theme = {
-					BackgroundColor3 = {"Secondary", 25},
-					TextColor3 = {"StrongText", 25}
-				},
-				Text = label,
-				TextSize = 14
-			}):round(5)
-
-			items[i] = {{label, value}, newItem}
+        items[i] = {{label, value}, newItem}
 
 			do
 				local hovered = false
